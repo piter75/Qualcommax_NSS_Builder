@@ -106,6 +106,7 @@ included desktop-router config:
 |---|---|
 | **NSS data plane** | `kmod-qca-nss-drv` + the `kmod-qca-ppe-nss` glue |
 | **Connection offload** | ECM (`kmod-qca-nss-ecm`), PPPoE manager (`kmod-qca-nss-drv-pppoe`) — IPv4 NAT, IPv6 routing, PPPoE-over-VLAN |
+| **VLAN offload** | `kmod-qca-nss-drv-vlan-mgr` — single-tagged 802.1Q upper devices on NSS physical interfaces; enable with `uci set nss.general.vlan_mgr='1'; uci commit nss` |
 | **Bridge offload** | `kmod-qca-nss-drv-bridge-mgr` — wired LAN bridging in hardware |
 | **Multicast** | `kmod-qca-mcs` — same-subnet multicast hardware-bridged to snooped members |
 | **SQM** | NSS qdiscs (`-qdisc`/`-igs`) + `sqm-scripts-nss` (`nss-edma.qos`, DSCP fast lane both directions) + `luci-app-sqm`. Ships as a **disabled template**: set `download`/`upload` to ~90-95 % of your measured line rate and enable it (LuCI **Network → SQM** or `uci`) — there is no safe universal default rate |
