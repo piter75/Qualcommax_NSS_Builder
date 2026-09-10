@@ -7,8 +7,8 @@
 [![License](https://img.shields.io/github/license/JuliusBairaktaris/Qualcommax_NSS_Builder?style=flat-square&label=License)](LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/JuliusBairaktaris/Qualcommax_NSS_Builder?style=flat-square&label=Last%20Commit)](https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/commits/main)
 
-A GitHub Actions pipeline that builds an OpenWrt image for **every IPQ807x
-device in the target** — all 39 of them: Qualcomm NSS hardware offload running
+A GitHub Actions pipeline that builds OpenWrt images for the selected Netgear
+Orbi IPQ807x devices — **RBR850, RBS850, RBRE960 and RBSE960**: Qualcomm NSS hardware offload running
 on OpenWrt main's **upstream `qca_edma` / `qca_ppe` ethernet drivers**
 ([PR #22381](https://github.com/openwrt/openwrt/pull/22381)) — not the vendor
 `qca-nss-dp` / `qca-ssdk` stack every other NSS build uses. Built from
@@ -32,11 +32,12 @@ profile id. Grab `...-<your device>-squashfs-sysupgrade.bin` from the newest
 and flash it:
 
 ```sh
-sysupgrade -n /tmp/openwrt-qualcommax-ipq807x-xiaomi_ax3600-squashfs-sysupgrade.bin
+sysupgrade /tmp/openwrt-qualcommax-ipq807x-netgear_rbr850-squashfs-sysupgrade.bin
 ```
 
-Or via LuCI: **System → Backup / Flash Firmware**, upload, uncheck "Keep
-settings" for a first-time flash.
+Or via LuCI: **System → Backup / Flash Firmware**, upload, and keep settings
+for a compatible same-family upgrade. Clear "Keep settings" only for a
+first-time or intentionally selective restore.
 
 Each build also publishes an `edma-nss-mesh-*` release with the same images
 built for **802.11s mesh offload**. Mesh interfaces are only accepted by NSS
@@ -46,8 +47,8 @@ firmware 11.4.0.5, the last line that supports them, so that release carries
 
 Separately, the `ppe-offload-test` prerelease carries **PPE hardware
 flow-offload test images** — stock OpenWrt plus LuCI on the in-kernel
-`qca_edma`/`qca_ppe` datapath, with no NSS at all — for every ipq807x *and*
-ipq60xx board. It is one permanent prerelease whose assets and notes are
+`qca_edma`/`qca_ppe` datapath, with no NSS at all — for the same four Netgear
+Orbi boards. It is one permanent prerelease whose assets and notes are
 replaced in place, so the link keeps working. These are for testing the
 offload, not a router build.
 
@@ -58,17 +59,14 @@ install stock OpenWrt first (your device's
 this over it.
 
 <details>
-<summary><b>Devices built</b> — all 39 in <code>qualcommax/ipq807x</code></summary>
+<summary><b>Devices built</b> — the four Netgear Orbi devices selected by the current workflow</summary>
 
 The split is the ath11k memory profile, which is compile-time and image-wide,
 so each group of boards that shares a profile shares a build.
 
 | Group | RAM | Devices |
 |---|---|---|
-| `xiaomi_ax3600` | 512 MB | Xiaomi AX3600 (own build: adds the board's wireless defaults and SQM template) |
-| `ipq807x-1g` | 1 GB+ | Aliyun AP8220, Arcadyan AW1000, Asus RT-AX89X, Buffalo WXR-5950AX12, Dynalink DL-WRX36, Edgecore EAP102, Linksys HomeWRK, Linksys MX4200 v2, Linksys MX4300, Linksys MX5300, Linksys MX8500, Netgear RAX120v2, Netgear RBR750, Netgear RBS750, Netgear SXR80, Netgear SXS80, Netgear WAX620, Netgear WAX630, prpl Haze, QNAP 301w, Spectrum SAX1V1K, TCL LINKHUB HH500V, TP-Link Deco X80-5G, TP-Link EAP620 HD v1, TP-Link EAP660 HD v1, Xiaomi AX9000, Yuncore AX880, Zbtlink ZBT-Z800AX, Zyxel NBG7815, Zyxel NWA110AX, Zyxel NWA210AX |
-| `ipq807x-512m` | 512 MB | CMCC RM2-6, Compex WPQ873, Edimax CAX1800, Linksys MX4200 v1, Redmi AX6, ZTE MF269 |
-| `ipq807x-256m` | 256 MB | Netgear WAX218 |
+| `ipq807x-1g` | 1 GB+ | Netgear RBR850, Netgear RBS850, Netgear RBRE960, Netgear RBSE960 |
 
 The AX3600 is the board every change is validated on; the rest carry the same
 data path and the same NSS device-tree nodes, and are built so a bug report
@@ -219,7 +217,7 @@ devices/common/          # shared by every image
 devices/xiaomi_ax3600/   # one directory per build: config + optional overlays
 devices/ipq807x-{1g,512m,256m}/
 devices/common-ppe/      # shared by the PPE test images (stock OpenWrt + LuCI)
-devices/ppe-{ipq807x,ipq60xx}/
+devices/ppe-ipq807x/      # the same four Netgear Orbi devices as Build
 scripts/                 # check-updates, prepare-build, prune-releases (tested, linted)
 docs/                    # CUSTOMIZE.md, ARCHITECTURE.md
 .github/workflows/       # build.yml, build-ppe.yml, lint.yml

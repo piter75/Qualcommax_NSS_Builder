@@ -1,6 +1,6 @@
 name: Build
 
-# Builds the edma-nss images for every ipq807x device, in four groups and two
+# Builds the edma-nss images for the configured ipq807x device groups and two
 # flavours (default, and mesh on the 11.4 firmware line):
 #   check (upstream moved?) -> draft release -> build each group -> publish -> prune
 # All build parameters live in the `env:` block below and in devices/<group>/config.
@@ -25,8 +25,8 @@ permissions:
   contents: read
 
 env:
-  UPSTREAM_REPO: JuliusBairaktaris/openwrt-nss-edma
-  UPSTREAM_REF: nss-edma-rework
+  UPSTREAM_REPO: piter75/openwrt
+  UPSTREAM_REF: orbi-edma-nss
   NSS_REPO: JuliusBairaktaris/nss-packages
   NSS_REF: edma-nss
   TARGET: qualcommax/ipq807x
@@ -141,7 +141,7 @@ jobs:
         # One entry per devices/<name>/ directory. The ipq807x-* groups exist
         # because the ath11k memory profile is compile-time and image-wide, so
         # boards can only share a build when they share a profile.
-        device: [xiaomi_ax3600, ipq807x-1g, ipq807x-512m, ipq807x-256m]
+        device: [ipq807x-1g]
         # The flavour is a .config fragment on top of the same overlays and the
         # same source trees; mesh needs the 11.4 firmware, which is image-wide
         # too, so it cannot share a build with the default flavour either.

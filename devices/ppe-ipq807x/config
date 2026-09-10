@@ -1,3 +1,7 @@
-# PPE test images for every ipq807x board.
+# PPE test images for the four Netgear Orbi boards covered by the main Build
+# action's ipq807x-1g group.
 
-CONFIG_TARGET_qualcommax_ipq807x=y
+CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_netgear_rbr850=y
+CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_netgear_rbs850=y
+CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_netgear_rbre960=y
+CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_netgear_rbse960=y
